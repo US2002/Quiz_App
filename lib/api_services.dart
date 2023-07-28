@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 
 var link = "https://opentdb.com/api.php?amount=20";
 
+//API to call questions
 getQuiz() async {
   var res = await http.get(Uri.parse(link));
   if (res.statusCode == 200) {

@@ -6,6 +6,8 @@ import 'package:quiz/const/images.dart';
 import 'package:quiz/const/text_style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:quiz/main.dart';
+import 'package:quiz/result_sc.dart';
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({Key? key}) : super(key: key);
@@ -14,18 +16,10 @@ class QuizScreen extends StatefulWidget {
   State<QuizScreen> createState() => _QuizScreenState();
 }
 
+//Questions Screen
 class _QuizScreenState extends State<QuizScreen> {
   var currentQuestionIndex = 0;
-  int seconds = 30;
-  Timer? timer;
-  late Future quiz;
-
-  int points = 0;
-
   var isLoaded = false;
-
-  var optionsList = [];
-
   var optionsColor = [
     Colors.white,
     Colors.white,
@@ -34,17 +28,23 @@ class _QuizScreenState extends State<QuizScreen> {
     Colors.white,
   ];
 
-  @override
-  void initState() {
-    super.initState();
-    quiz = getQuiz();
-    startTimer();
-  }
+  var optionsList = [];
+  int points = 0;
+  late Future quiz;
+  int seconds = 30;
+  Timer? timer;
 
   @override
   void dispose() {
     timer!.cancel();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    quiz = getQuiz();
+    startTimer();
   }
 
   resetColors() {
@@ -119,7 +119,10 @@ class _QuizScreenState extends State<QuizScreen> {
                           ),
                           child: IconButton(
                               onPressed: () {
-                                Navigator.pop(context);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => QuizApp()));
                               },
                               icon: const Icon(
                                 CupertinoIcons.xmark,
@@ -151,7 +154,7 @@ class _QuizScreenState extends State<QuizScreen> {
                             border: Border.all(color: lightgrey, width: 2),
                           ),
                           child: TextButton.icon(
-                              onPressed: null,
+                              onPressed: () {},
                               icon: const Icon(CupertinoIcons.heart_fill,
                                   color: Colors.white, size: 18),
                               label: normalText(
@@ -191,6 +194,12 @@ class _QuizScreenState extends State<QuizScreen> {
                                 points = points + 10;
                               } else {
                                 optionsColor[index] = Colors.red;
+                                for (var i = 0; i < optionsList.length; i++) {
+                                  if (answer.toString() ==
+                                      optionsList[i].toString()) {
+                                    optionsColor[i] = Colors.green;
+                                  }
+                                }
                               }
 
                               if (currentQuestionIndex < data.length - 1) {
@@ -200,6 +209,11 @@ class _QuizScreenState extends State<QuizScreen> {
                               } else {
                                 timer!.cancel();
                                 //here you can do whatever you want with the results
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ResultScreen(points)));
                               }
                             });
                           },

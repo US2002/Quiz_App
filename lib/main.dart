@@ -5,6 +5,7 @@ import 'package:quiz/quiz_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:quiz/result_sc.dart';
 
 main() {
   SystemChrome.setSystemUIOverlayStyle(
@@ -23,11 +24,12 @@ class App extends StatelessWidget {
       theme: ThemeData(
         fontFamily: "quick",
       ),
-      title: "Demo",
+      title: "Quizzy",
     );
   }
 }
 
+//Starting Screen
 class QuizApp extends StatelessWidget {
   const QuizApp({Key? key}) : super(key: key);
 
@@ -56,7 +58,9 @@ class QuizApp extends StatelessWidget {
                   border: Border.all(color: lightgrey, width: 2),
                 ),
                 child: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      SystemNavigator.pop();
+                    },
                     icon: const Icon(
                       CupertinoIcons.xmark,
                       color: Colors.white,
